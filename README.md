@@ -199,7 +199,9 @@ Other potentially useful environment variables may be found in `setup.py`.
 **Common**
 
 ```bash
-conda install cmake ninja
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+conda install -c conda-forge libstdcxx-ng ncurses pyyaml cmake ninja pillow
 # Run this command from the PyTorch directory after cloning the source code using the “Get the PyTorch Source“ section below
 pip install -r requirements.txt
 ```
@@ -261,7 +263,11 @@ python tools/amd_build/build_amd.py
 Install PyTorch
 ```bash
 export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
+export CMAKE_POLICY_VERSION_MINIMUM=3.5
+## install
 python setup.py develop
+## if install and make wheel
+USE_CUDA=1 TORCH_CUDA_ARCH_LIST="Blackwell" MAX_JOBS=4 python setup.py bdist_wheel
 ```
 
 > _Aside:_ If you are using [Anaconda](https://www.anaconda.com/distribution/#download-section), you may experience an error caused by the linker:
